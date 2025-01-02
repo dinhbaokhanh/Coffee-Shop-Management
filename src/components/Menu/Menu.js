@@ -52,12 +52,22 @@ export default function Menu() {
                 <table className={styles.menuTable}>
                     <thead>
                         <tr>
-                            <th className={styles.th} onClick={() => handleSort('name')}>Product Name {sortBy.column === 'name' && (sortBy.order === 'asc' ? '🔼' : '🔽')}</th>
-                            <th className={styles.th} onClick={() => handleSort('category')}>Category {sortBy.column === 'category' && (sortBy.order === 'asc' ? '🔼' : '🔽')}</th>
-                            <th className={styles.th} onClick={() => handleSort('price')}>Price {sortBy.column === 'price' && (sortBy.order === 'asc' ? '🔼' : '🔽')}</th>
-                            <th className={styles.th} onClick={() => handleSort('stock')}>Stock {sortBy.column === 'stock' && (sortBy.order === 'asc' ? '🔼' : '🔽')}</th>
-                            <th className={styles.th} onClick={() => handleSort('status')}>Status {sortBy.column === 'status' && (sortBy.order === 'asc' ? '🔼' : '🔽')}</th>
-                            <th className={styles.th}>Ingredients</th> {/* Cột Ingredients */}
+                            <th className={styles.th} onClick={() => handleSort('name')}>
+                                Product Name {sortBy.column === 'name' && (sortBy.order === 'asc' ? '🔼' : '🔽')}
+                            </th>
+                            <th className={styles.th} onClick={() => handleSort('category')}>
+                                Category {sortBy.column === 'category' && (sortBy.order === 'asc' ? '🔼' : '🔽')}
+                            </th>
+                            <th className={styles.th} onClick={() => handleSort('price')}>
+                                Price {sortBy.column === 'price' && (sortBy.order === 'asc' ? '🔼' : '🔽')}
+                            </th>
+                            <th className={styles.th} onClick={() => handleSort('stock')}>
+                                Stock {sortBy.column === 'stock' && (sortBy.order === 'asc' ? '🔼' : '🔽')}
+                            </th>
+                            <th className={styles.th} onClick={() => handleSort('status')}>
+                                Status {sortBy.column === 'status' && (sortBy.order === 'asc' ? '🔼' : '🔽')}
+                            </th>
+                            <th className={styles.th}>Ingredients</th>
                             <th className={styles.th}>Action</th>
                         </tr>
                     </thead>
@@ -92,6 +102,7 @@ export default function Menu() {
                         ))}
                     </tbody>
                 </table>
+
 
                 <div className={styles.pagination}>
                     <button onClick={() => setCurrentPage(0)} disabled={currentPage === 0}>{"<<"}</button>
