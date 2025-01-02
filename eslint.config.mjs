@@ -7,6 +7,11 @@ const __dirname = dirname(__filename);
 
 const compat = new FlatCompat({ baseDirectory: __dirname });
 
-export default [
-  compat.extends("next/core-web-vitals"),
-];
+export default {
+  overrides: [
+    {
+      files: ["**/*.js", "**/*.ts"],
+      extends: ["next/core-web-vitals"],
+    },
+  ],
+};
