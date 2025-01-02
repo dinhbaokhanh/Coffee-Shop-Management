@@ -2,35 +2,27 @@ const { FlatCompat } = require("@eslint/eslintrc");
 const js = require("@eslint/js");
 
 const compat = new FlatCompat({
-    baseDirectory: __dirname,                  // optional; default: process.cwd()
-    resolvePluginsRelativeTo: __dirname,       // optional
-    recommendedConfig: js.configs.recommended, // optional unless using "eslint:recommended"
-    allConfig: js.configs.all,                 // optional unless using "eslint:all"
+    baseDirectory: __dirname,
+    resolvePluginsRelativeTo: __dirname,
+    recommendedConfig: js.configs.recommended, // Include recommended rules
 });
 
 module.exports = [
-
-    // mimic ESLintRC-style extends
-    ...compat.extends("standard", "example", "plugin:react/recommended"),
-
-    // mimic environments
-    ...compat.env({
-        es2020: true,
-        node: true
-    }),
-
-    // mimic plugins
-    ...compat.plugins("jsx-a11y", "react"),
-
-    ...compat.config({
-        plugins: ["jsx-a11y", "react"],
-        extends: "standard",
-        env: {
-            es2020: true,
-            node: true
-        },
-        rules: {
-            semi: "error"
-        }
-    })
+    {
+        ...compat.config({
+            extends: ["standard", "plugin:react/recommended"], // Use an array for multiple extends
+            plugins: ["jsx-a11y", "react"],
+            env: {
+                es2020: true,
+                node: true,
+                browser: true // Important for React projects
+            },
+            rules: {
+                semi: "error",
+                // Add other rules as needed. Example for react hooks:
+                'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
+                'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
+            },
+        }),
+    },
 ];
