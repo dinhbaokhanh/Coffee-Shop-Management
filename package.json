@@ -17,7 +17,7 @@
     "react-icons": "^5.4.0"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
+    "@eslint/eslintrc": "^3.2.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^9.17.0",
     "eslint-config-next": "15.1.3",
