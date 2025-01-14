@@ -11,6 +11,15 @@ export default function Menu() {
     const [searchInput, setSearchInput] = useState('');
     const [sortBy, setSortBy] = useState({column: 'name', order: 'asc'});
     const [currentPage, setCurrentPage] = useState(0);
+    const [isFormVisible, setIsFormVisible] = useState(false);
+    const [errors, setErrors] = useState({});
+    const [newProduct, setNewProduct] = useState({
+        name: "",
+        category: "",
+        price: "",
+        status: "Còn hàng",
+    });
+
     const itemsPerPage = 6;
 
     const filteredProducts = products.filter(
@@ -33,13 +42,36 @@ export default function Menu() {
         });
     };
 
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setNewProduct((prevProduct) => ({
+            ...prevProduct,
+            [name]: value,
+        }));
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (!newProduct.name || !newProduct.category || !newProduct.price) {
+            alert("Please fill in all fields");
+            return;
+        }
+        addProduct(newProduct); 
+        setNewProduct({
+            name: "",
+            category: "",
+            price: "",
+            status: "Còn hàng",
+        });
+    };
+
     return (
         <div className={styles.menuContainer}>
             <Sidebar />
             <div className={styles.menuContent}>
                 <h1 className={styles.menuTitle}>Menu</h1>
 
-                <div style={{ marginBottom: "10px" }}>
+                <div className={styles.inputContent}>
                     <input
                         type="text"
                         value={searchInput}
@@ -47,7 +79,93 @@ export default function Menu() {
                         placeholder="Search..."
                         className={styles.searchInput}
                     />
+
+                    <button 
+                        className={styles.addMenuBtn} 
+                        onClick={() => setIsFormVisible(true)}
+                    >
+                        Add
+                    </button>
                 </div>
+
+                {isFormVisible && (
+                    <div className={styles.overlay}>
+                        <form
+                            onSubmit={(e) => {
+                                e.preventDefault();
+                                handleAddProduct(newProduct);
+                            }}
+                            className={styles.addFormContainer}
+                        >
+                            <label>
+                                Name:
+                                <input
+                                    type="text"
+                                    value={newProduct.name}
+                                    onChange={(e) =>
+                                        setNewProduct({
+                                            ...newProduct,
+                                            name: e.target.value,
+                                        })
+                                    }
+                                />
+                            </label>
+                            <label>
+                                Category:
+                                <select
+                                    value={newProduct.category}
+                                    onChange={(e) =>
+                                        setNewProduct({
+                                            ...newProduct,
+                                            category: e.target.value,
+                                        })
+                                    }
+                                >
+                                    <option value="">-- Select Category --</option>
+                                    <option value="Đồ ăn vặt">Đồ ăn vặt</option>
+                                    <option value="Đồ uống">Đồ uống</option>
+                                </select>
+                            </label>
+                            <label>
+                                Price:
+                                <input
+                                    type="number"
+                                    value={newProduct.price}
+                                    onChange={(e) =>
+                                        setNewProduct({
+                                            ...newProduct,
+                                            price: e.target.value,
+                                        })
+                                    }
+                                />
+                            </label>
+                            <label>
+                                Status:
+                                <select
+                                    value={newProduct.status}
+                                    onChange={(e) =>
+                                        setNewProduct({
+                                            ...newProduct,
+                                            status: e.target.value,
+                                        })
+                                    }
+                                >
+                                    <option value="Còn hàng">Còn hàng</option>
+                                    <option value="Hết hàng">Hết hàng</option>
+                                </select>
+                            </label>
+
+                            <button type="submit">Add Product</button>
+                            <button
+                                type="button"
+                                onClick={() => setIsFormVisible(false)}
+                            >
+                                Cancel
+                            </button>
+                        </form>
+                    </div>
+                )}
+
 
                 <table className={styles.menuTable}>
                     <thead>
@@ -61,13 +179,9 @@ export default function Menu() {
                             <th className={styles.th} onClick={() => handleSort('price')}>
                                 Price {sortBy.column === 'price' && (sortBy.order === 'asc' ? '🔼' : '🔽')}
                             </th>
-                            <th className={styles.th} onClick={() => handleSort('stock')}>
-                                Stock {sortBy.column === 'stock' && (sortBy.order === 'asc' ? '🔼' : '🔽')}
-                            </th>
                             <th className={styles.th} onClick={() => handleSort('status')}>
                                 Status {sortBy.column === 'status' && (sortBy.order === 'asc' ? '🔼' : '🔽')}
                             </th>
-                            <th className={styles.th}>Ingredients</th>
                             <th className={styles.th}>Action</th>
                         </tr>
                     </thead>
@@ -77,18 +191,8 @@ export default function Menu() {
                                 <td className={styles.td}>{product.name}</td>
                                 <td className={styles.td}>{product.category}</td>
                                 <td className={styles.td}>{product.price.toLocaleString()} đ</td>
-                                <td className={styles.td}>{product.stock}</td>
                                 <td className={product.status === "Còn hàng" ? styles.inStock : styles.outOfStock}>
                                     {product.status}
-                                </td>
-                                <td className={styles.td}>
-                                    <ul className={styles.ingredientsList}>
-                                        {product.ingredients.map((ingredient, index) => (
-                                            <li key={index}>
-                                                {ingredient.name}: {ingredient.amount}
-                                            </li>
-                                        ))}
-                                    </ul>
                                 </td>
                                 <td className={styles.td}>
                                     <button className={styles.editIcon}>
